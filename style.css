@@ -22,7 +22,7 @@ body{
     background-attachment: fixed;
 }
 
-.container{
+#container{
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -52,30 +52,13 @@ body{
     width: 4rem;
     font-size: 0.6rem;
     padding-top: 0.2rem;
+    margin-right: 1rem;
 }
 
 #btn_v{
     width: 4rem;
     font-size: 0.6rem;
     padding-top: 0.2rem;
-}
-
-#error{
-    position: relative;
-    top: 1rem;
-    width: 30rem;
-    height: 2rem;
-    color: rgb(255, 0, 0);
-    animation: pulsacao ease-in 1s;
-}
-
-@keyframes pulsacao {
-    from{
-        opacity: 0;
-    }
-    to{
-        opacity: 1;
-    }  
 }
 
 /*Elementos Principais Bloco Pokemon*/
@@ -125,7 +108,7 @@ body{
     padding: 2px;
 }
 
-#deletar{
+.btn_deletar{
     position: relative;
     display: flex;
     justify-content: center;
@@ -138,8 +121,8 @@ body{
     background-color: rgba(252, 255, 67, 0.932);
 }
 
-#deletar:hover{
-    cursor:crosshair;
+.btn_deletar:hover{
+    cursor: pointer;
     color: red;
     transition: 500ms;
 }
@@ -162,6 +145,15 @@ body{
     box-shadow: 1px 1px 6px 0.6px rgba(0, 0, 0, 0.5);
 }
 
-.informacao label{
+.informacao span{
     height: 2rem;
+}
+
+#mensagem{
+    position: relative;
+    width: 40rem;
+    height: 2rem;
+    margin-top: 1.6rem;
+    color: rgba(252, 255, 67, 0.932);
+    -webkit-text-stroke: 0.1rem #000;
 }
