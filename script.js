@@ -22,13 +22,13 @@ $(document).ready(() => {
                     data: { nome: nome, tipo: Nometipo, imagem: img, },
                     success: function (response) {
 
-                        $('#mensagem').remove();
-
                         const mensagem = `<span id="mensagem">${response}</span>`;
 
                         $('#container').append(mensagem);
 
                         GerarPokemon();
+
+                        removerMensagem();
                         
                     },
                     error: function (error) {
@@ -45,9 +45,12 @@ $(document).ready(() => {
         });
     });
 
+    var contador = 0;
+
     //BOTÃO PARA GERAR POKEMON DO BD
     $('#btn_v').on('click', ()=>{
-        GerarPokemon();
+        contador++;
+        contador%2 != 0 ? GerarPokemon() : $('.bloco').remove();
     })
 
     //FUNÇÃO PARA GERAR POKEMON DO BD
@@ -97,8 +100,6 @@ $(document).ready(() => {
             method: 'POST',
             success: function (response) {
 
-                $('#mensagem').remove();
-
                 $(this).closest('.bloco').remove();
 
                 const mensagem = `<span id="mensagem">${response}</span>`;
@@ -106,6 +107,8 @@ $(document).ready(() => {
                 $('#container').append(mensagem);
 
                 GerarPokemon();
+
+                removerMensagem();
             },
             error: function (error) {
 
@@ -114,4 +117,10 @@ $(document).ready(() => {
             }
         });
     });
+
+    function removerMensagem(){
+        setTimeout(() => {
+            $('#mensagem').remove();
+        }, 3000);
+    }
 });
