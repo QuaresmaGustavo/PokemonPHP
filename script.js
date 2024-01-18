@@ -1,10 +1,27 @@
 $(document).ready(() => {
 
-    //CONSUMIR API
-    $('#btn').on('click', () => {
-        var pesq = $("#pesquisa").val();
+    //FUNÇÃO GERAR POKEMON QUANDO BD ESTIVER VAZIO
+    function gerarAleatorio(){
+        var num = Math.floor(Math.random(0,1302)*100);
+        $.ajax({
+            url: 'funcoes.php?funcao=verificar',
+            method: 'POST',
+            success: function (dados) {
+                if(dados == 0){
+                    var url = 'https://pokeapi.co/api/v2/pokemon/'+ num;
+                    inserirPokemon(url);
+                }
+            }, error: function (error) {
+    
+                alert('Erro ao gerar pokemon'+ error);
 
-        var link = 'https://pokeapi.co/api/v2/pokemon/' + pesq;
+            }
+        });
+    }
+
+
+    //FUNÇÃO PARA INSERIR POKEMON
+    function inserirPokemon(link){
         $.ajax({
             url: link,
             method: 'GET',
@@ -39,19 +56,11 @@ $(document).ready(() => {
                 })
             }, error: function () {
 
-                console.log('Erro durante consumo da API');
+                alert('Erro durante consumo da API');
 
             }
         });
-    });
-
-    var contador = 0;
-
-    //BOTÃO PARA GERAR POKEMON DO BD
-    $('#btn_v').on('click', ()=>{
-        contador++;
-        contador%2 != 0 ? GerarPokemon() : $('.bloco').remove();
-    })
+    }
 
     //FUNÇÃO PARA GERAR POKEMON DO BD
     function GerarPokemon() {
@@ -82,21 +91,16 @@ $(document).ready(() => {
             },
             error: function (error) {
 
-                console.log('Erro ao gerar Pokemon do Banco de dados ' + error);
+                alert('Erro ao gerar Pokemon do Banco de dados ' + error);
 
             }
         });
     };
 
-    //DELETAR
-    $(document).on('click', '.btn_deletar', function () {
-
-        var id = $(this).closest('.bloco').find('.id input').val();
-
-        console.log("id " + id);
-
+    //FUNÇÃO PARA DELETAR
+    function Deletar(link){
         $.ajax({
-            url: 'funcoes.php?funcao=deletar&id=' + id,
+            url: link,
             method: 'POST',
             success: function (response) {
 
@@ -112,15 +116,45 @@ $(document).ready(() => {
             },
             error: function (error) {
 
-                console.log('Erro ao deletar pokemon ' + error);
+                alert('Erro ao deletar pokemon ' + error);
 
             }
         });
-    });
+    }
 
+    //REMOVER MENSAGEM
     function removerMensagem(){
         setTimeout(() => {
             $('#mensagem').remove();
         }, 3000);
     }
+
+    //GERAR POKEMON ALEATORIAMENTE
+    gerarAleatorio();
+
+    //PESQUISAR POKEMON
+    $('#btn').on('click', () => {
+        let pesq = $("#pesquisa").val().toLowerCase();
+
+        var url = 'https://pokeapi.co/api/v2/pokemon/' + pesq;
+        inserirPokemon(url);
+    });
+
+    //GERAR POKEMON DO BD
+    var contador = 0;
+    
+    $('#btn_v').on('click', ()=>{
+        contador++;
+        contador%2 != 0 ? GerarPokemon() : $('.bloco').remove();
+    })
+
+    //DELETAR
+    $(document).on('click', '.btn_deletar', function () {
+
+        var id = $(this).closest('.bloco').find('.id input').val();
+
+        var url = 'funcoes.php?funcao=deletar&id=' + id;
+
+        Deletar(url);
+    });
 });

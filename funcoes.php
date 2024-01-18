@@ -6,6 +6,21 @@ try{
     $funcao = $_GET['funcao'];
 
     switch($funcao){
+        case 'verificar':
+
+            $consulta = "SELECT COUNT(*) AS total FROM pokemon";
+            $conectar = $conexao->prepare($consulta);
+
+            $conectar->execute();
+
+            $linha = $conectar->fetch(PDO::FETCH_ASSOC);
+
+            echo $linha['total'];
+
+            $conectar = null;
+
+        break;
+
         case 'inserir':
             
             $nome = $_POST['nome'];
@@ -36,10 +51,14 @@ try{
                 $conectar->bindParam(':tipo', $tipo);
 
                 $conectar->execute();
+
                 echo "Pokemon registrado no banco de dados!!";
+
             }else{
                 echo "Pokemon ja registrado no banco de dados!!";
             }
+
+            $conectar = null;
         break;
 
         case 'mostrar':
@@ -63,6 +82,8 @@ try{
             }
 
             die(json_encode($resultado));
+
+            $conectar = null;
         break;
 
         case 'deletar':
@@ -75,6 +96,8 @@ try{
 
             echo "Pokemon removido do banco de dados!!";
             
+            $conectar = null;
+
         break;
     }
 }catch(PDOException $error){
